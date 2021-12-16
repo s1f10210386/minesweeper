@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   height: 100vh;
-  background-color: #797979;
+  font-size: 0;
+  background-color: #c0c0c0;
 `
 const Board = styled.div`
   position: absolute;
@@ -12,7 +13,7 @@ const Board = styled.div`
   width: 250px;
   height: 300px;
   margin: auto;
-  background-color: black;
+  background-color: #696969;
   transform: translate(-50%, -50%);
 `
 const Face = styled.div`
@@ -38,10 +39,10 @@ const Field = styled.div`
   background-color: #d6cdcd;
 `
 const Block = styled.div`
-  display: grid;
+  display: inline-block;
   width: 25px;
-  height: 2px;
-  background-color: blue;
+  height: 25px;
+  background-color: #808080;
 `
 
 const Home: NextPage = () => {
