@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
   height: 100vh;
-  background-color: #797979;
+  background-color: #c0c0c0;
 `
 const Board = styled.div`
   position: absolute;
@@ -12,7 +13,7 @@ const Board = styled.div`
   width: 250px;
   height: 300px;
   margin: auto;
-  background-color: black;
+  background-color: #696969;
   transform: translate(-50%, -50%);
 `
 const Face = styled.div`
@@ -37,30 +38,67 @@ const Field = styled.div`
   margin: auto;
   background-color: #d6cdcd;
 `
-const Block = styled.div`
-  display: grid;
+const BombBlock = styled.div`
+  display: inline-block;
   width: 25px;
-  height: 2px;
-  background-color: blue;
+  height: 25px;
+  color: red;
+  text-align: center;
+  background-color: white;
+  border: 1px solid black;
 `
+const Block = styled.div<{ isOpen: boolean; num: number }>`
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  font-weight: bold;
+  color: ${(props) => (props.num < 9 && props.num > 0 ? COLORS[props.num - 1] : 'black')};
+  text-align: center;
+  vertical-align: bottom;
+  background-color: ${(props) => (props.isOpen ? 'white' : 'grey')};
+  border: 1px solid black;
+`
+const COLORS = ['blue', 'green', 'red', 'purple', 'brown', 'yellow', 'orange', 'silver']
 
 const Home: NextPage = () => {
+  const [bombs, setBombs] = useState([{ x: 0, y: 0 }])
+
+  //prettier-ignore
+  const[board,setBoard]=useState([
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+    [9, 9, 9, 9, 9, 9, 9, 9, 9,],
+  ])
+
+  const onClick = (x: number, y: number) => {
+    console.log(x, y)
+    const newBoard: number[][] = JSON.parse(JSON.stringify(board))
+    newBoard[y][x] = bombs.some((bomb) => bomb.x === x && bomb.y === y) ? 10 : 1
+    setBoard(newBoard)
+  }
+
   return (
     <Container>
       <Board>
         <Face></Face>
         <Field>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
-          <Block></Block>
+          {board.map((row, y) =>
+            row.map((num, x) =>
+              num === 10 ? (
+                <BombBlock>●</BombBlock>
+              ) : (
+                <Block key={`${x}-${y}`} isOpen={num < 9} num={num} onClick={() => onClick(x, y)}>
+                  {num < 9 && num !== 0 && num}
+                </Block>
+              )
+            )
+          )}
         </Field>
       </Board>
     </Container>
