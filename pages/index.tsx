@@ -61,7 +61,10 @@ const Block = styled.div<{ isOpen: boolean; num: number }>`
 const COLORS = ['blue', 'green', 'red', 'purple', 'brown', 'yellow', 'orange', 'silver']
 
 const Home: NextPage = () => {
-  const [bombs, setBombs] = useState([{ x: 0, y: 0 }])
+  const [bombs, setBombs] = useState([
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+  ])
 
   //prettier-ignore
   const[board,setBoard]=useState([
@@ -80,13 +83,67 @@ const Home: NextPage = () => {
     console.log(x, y)
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
 
+    let Newnum = 0
+
     for (let i = 0; i < bombs.length; i++) {
-      if (bombs[i].x === x - 1 && bombs[i].y === y) {
-        newBoard[y][x] = 1
-      } else {
-        newBoard[y][x] = 0
+      if (bombs[i].x === x && bombs[i].y === y) {
+        Newnum += 10
       }
     }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x - 1 && bombs[i].y === y) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x && bombs[i].y === y - 1) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x - 1 && bombs[i].y === y - 1) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x + 1 && bombs[i].y === y - 1) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x + 1 && bombs[i].y === y) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x + 1 && bombs[i].y === y + 1) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x && bombs[i].y === y + 1) {
+        Newnum += 1
+      }
+    }
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x - 1 && bombs[i].y === y + 1) {
+        Newnum += 1
+      }
+    }
+
+    if (10 < Newnum) {
+      Newnum = 10
+    }
+
+    newBoard[y][x] = Newnum
 
     setBoard(newBoard)
   }
