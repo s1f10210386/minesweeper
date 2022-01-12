@@ -79,7 +79,15 @@ const Home: NextPage = () => {
   const onClick = (x: number, y: number) => {
     console.log(x, y)
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
-    newBoard[y][x] = bombs.some((bomb) => bomb.x === x && bomb.y === y) ? 10 : 1
+
+    for (let i = 0; i < bombs.length; i++) {
+      if (bombs[i].x === x - 1 && bombs[i].y === y) {
+        newBoard[y][x] = 1
+      } else {
+        newBoard[y][x] = 0
+      }
+    }
+
     setBoard(newBoard)
   }
 
